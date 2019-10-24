@@ -169,15 +169,12 @@ while True:
                                 log_file.write(aml_json + '\n')
                         
                             cursor_leitstelle_insert.close()
-                        aml_location_accuracy = records[0][0]
                         cursor_leitstelle_query.close()                        
 
                 
                 aml_result = datetime.datetime.now().strftime('*** %d.%m.%Y - %H:%M:%S ***: ')\
                 + "Datensatz vorhanden. (" + telefonnummer + "). "\
-                + "AML-Daten vorhanden."\
-                + " Genauigkeit in m: "\
-                + str(aml_location_accuracy)
+                + "AML-Daten vorhanden."
                 print(aml_result)
                 # LOG
                 with open(str(current_dir) + datetime.datetime.now().strftime('/logs/%Y_%m_%d.log'), 'a') as log_file:
