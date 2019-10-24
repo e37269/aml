@@ -55,7 +55,7 @@ while($row = mysqli_fetch_row($aml_tabelle))
 					echo "<td data-label=\"Rufnummer\">$_spalte0</td>";
 					echo "<td data-label=\"Zeitpunkt Lokalisierung\">$_spalte1</td>";
 					echo "<td data-label=\"Anrufzeit\">$_spalte2</td>";
-					echo "<td data-label=\"Position\"><a href='http://192.168.155.211/#16/$_spalte3[0]/$_spalte3[1]' target=\"_blank\" style=\" color: black \" \">$l_anzeige<br>$b_anzeige</a></td>";
+					echo "<td data-label=\"Position\"><a href='http://192.x.x.x/#16/$_spalte3[0]/$_spalte3[1]' target=\"_blank\" style=\" color: black \" \">$l_anzeige<br>$b_anzeige</a></td>";
 					echo "<td data-label=\"Genauigkeit (in m)\">$_spalte4</td>";
 				echo '</tr>';
 	   };
