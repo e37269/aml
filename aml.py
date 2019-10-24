@@ -56,7 +56,7 @@ while True:
                 ('number', telefonnummer),
             )
             try:
-                response = requests.get('https://auskunft.notrufdaten.de:50443/v1/getdata', params=params, auth=(cfg.aml_server['user'], cfg.aml_server['password']), cert=(str(current_dir.joinpath('cert', 'cacert.pem'))))
+                response = requests.get(cfg.aml_server['url'] + ':' + cfg.aml_server['port'] + '/v1/getdata', params=params, auth=(cfg.aml_server['user'], cfg.aml_server['password']), cert=(str(current_dir.joinpath('cert', 'cacert.pem'))))
             except requests.exceptions.RequestException as e:
                 with open(current_dir.joinpath('logs', str(datetime.datetime.now().strftime('%Y_%m_%d.log'))), 'a') as log_file:
                     log_file.write(datetime.datetime.now().strftime('*** %d.%m.%Y - %H:%M:%S ***: ' + e + '\n'))
