@@ -19,10 +19,10 @@ db_leitstelle = {'host': '***',
 """
 Zugangsdaten für den AML-Server
 """
-aml_server = {'user': 'lst_werra_meissner_kreis',
-              'password': 'd5ae58df8dd1a0a46a57415cd70112ec',
-              'url': 'https://auskunft.notrufdaten.de',
-              'port': '50443'}
+aml_server = {'user': '***',
+              'password': '***',
+              'url': '***',
+              'port': '***'}
               
 """
 Query C4 Anrufe (verarbeiet werden ROW_ID, telefonnummer, anrufzeit)
