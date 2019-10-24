@@ -43,7 +43,7 @@ while True:
     Die ise_rowid, telefonnumer und anrufzeit aus der Datenbank selektieren, falls ein passender Datensatz gefunden wird
     """
     cursor_c4.execute(cfg.query)
-    #cursor_c4.execute("SELECT anrufe.ise_rowid, telefonnummer,  CONVERT_TZ(STR_TO_DATE(anrufe.eingabezeit, '%Y%m%d%H%i%s'), '+00:00', '+02:00') as anrufzeit, anrufrichtung FROM anrufe WHERE ise_rowid = 'ise1234sys00k231iwkj00'")
+    
     # Pruefen ob Datensatz vorhanden              
     if (cursor_c4.rowcount > 0):
         for result in cursor_c4:
@@ -61,7 +61,7 @@ while True:
                 with open(current_dir.joinpath('logs', str(datetime.datetime.now().strftime('%Y_%m_%d.log'))), 'a') as log_file:
                     log_file.write(datetime.datetime.now().strftime('*** %d.%m.%Y - %H:%M:%S ***: ' + e + '\n'))
                     
-            # Pruefen ob AML-Daten fuer telefonnummber vorhanden sind
+            # Pruefen ob AML-Daten fuer telefonnummer vorhanden sind
             if (response.json()[0]['status']) == 'no aml data':
                 result_no_aml = datetime.datetime.now().strftime('*** %d.%m.%Y - %H:%M:%S ***: ') + "Datensatz vorhanden (" + (telefonnummer) + "). Keine zugehoerigen AML-Daten"
                 print(result_no_aml)
@@ -114,10 +114,8 @@ while True:
                         cursor_leitstelle_query.execute(get_accuracy_ls, (ise_id,))
                         records = cursor_leitstelle_query.fetchall()
                         
-                        
+                        # Falls kein Datensatz vorhanden für diese row_id - Datensatz schreiben
                         if not records:
-                            # Daten in Leitstllen-Datenbank schreiben
-                            print("hallo 1")
                             cursor_leitstelle_insert = leitstelle_db.cursor(buffered=True)
                             write_aml_ls = ('REPLACE INTO aml '
                                         '(ise_id, status, number, emergency_number, location_latitude, location_longitude, location_time, location_altitude, location_floor, location_source, location_accuracy, location_vertical_accuracy, location_confidence, location_bearing, location_speed, anrufzeit) '
@@ -144,6 +142,7 @@ while True:
 
                             cursor_leitstelle_insert.close()
 
+                        # Falls Genauigkeit des Datensatzes hoeher als vorhandener Datensatz - Datensatz schreiben
                         elif float(r['location_accuracy']) < float(records[0][0]):
                             cursor_leitstelle_insert = leitstelle_db.cursor(buffered=True)
                             write_aml_ls = ('REPLACE INTO aml '
@@ -157,6 +156,7 @@ while True:
                                 # LOG
                                 with open(current_dir.joinpath('logs', str(datetime.datetime.now().strftime('%Y_%m_%d.log'))), 'a') as log_file:
                                     log_file.write(err + '\n')
+
                             aml_result = datetime.datetime.now().strftime('*** %d.%m.%Y - %H:%M:%S ***: ')\
                             + "Datensatz vorhanden. (" + telefonnummer + "). "\
                             + "AML-Daten vorhanden."\
@@ -183,19 +183,6 @@ while True:
                 with open(str(current_dir) + datetime.datetime.now().strftime('/logs/%Y_%m_%d.log'), 'a') as log_file:
                     log_file.write(aml_result + '\n')
                     log_file.write(aml_json + '\n')
-                        
-                        
-                        
-                        
-                        #aml_result = datetime.datetime.now().strftime('*** %d.%m.%Y - %H:%M:%S ***: ')\
-                        #    + "Datensatz vorhanden. (" + telefonnummer + "). "\
-                        #    + "AML-Daten vorhanden."\
-                        #    + " Genauigkeit in m: "\
-                        #    + str(aml_location_accuracy)
-                        #    # LOG
-                        #with open(str(current_dir) + datetime.datetime.now().strftime('/logs/%Y_%m_%d.log'), 'a') as log_file:
-                        #    log_file.write(aml_result + '\n')
-                        #    log_file.write(aml_json + '\n')
 
 
     # Kein neuer Datensatz in C4-Datenbank vorhanden
