@@ -43,7 +43,6 @@ while True:
     Die ise_rowid, telefonnumer und anrufzeit aus der Datenbank selektieren, falls ein passender Datensatz gefunden wird
     """
     cursor_c4.execute(cfg.query)
-    
     # Pruefen ob Datensatz vorhanden              
     if (cursor_c4.rowcount > 0):
         for result in cursor_c4:
@@ -170,9 +169,10 @@ while True:
                                 log_file.write(aml_json + '\n')
                         
                             cursor_leitstelle_insert.close()
+                        aml_location_accuracy = records[0][0]
                         cursor_leitstelle_query.close()                        
 
-                aml_location_accuracy = records[0][0]
+                
                 aml_result = datetime.datetime.now().strftime('*** %d.%m.%Y - %H:%M:%S ***: ')\
                 + "Datensatz vorhanden. (" + telefonnummer + "). "\
                 + "AML-Daten vorhanden."\
