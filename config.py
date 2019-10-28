@@ -27,9 +27,9 @@ aml_server = {'user': '***',
 """
 Query C4 Anrufe (verarbeiet werden ROW_ID, telefonnummer, anrufzeit)
 """
-query = "SELECT anrufe.ise_rowid, telefonnummer,  CONVERT_TZ(STR_TO_DATE(anrufe.eingabezeit, '%Y%m%d%H%i%s'), '+00:00', '+02:00') as anrufzeit\
+query = "SELECT anrufe.ise_rowid, telefonnummer,  CONVERT_TZ(STR_TO_DATE(anrufe.eingabezeit, '%Y%m%d%H%i%s'), '+00:00', @@global.time_zone) as anrufzeit\
             FROM c4.anrufe\
                 WHERE (anrufe.telefonnummer LIKE '01%' OR anrufe.telefonnummer LIKE '+491%')\
-                AND (CONVERT_TZ(STR_TO_DATE(anrufe.eingabezeit, '%Y%m%d%H%i%s'), '+00:00', '+02:00') > ADDTIME(NOW(),'-00:01:10'))\
+                AND (CONVERT_TZ(STR_TO_DATE(anrufe.eingabezeit, '%Y%m%d%H%i%s'), '+00:00', @@global.time_zone) > ADDTIME(NOW(),'-00:01:10'))\
                     ORDER BY anrufe.eingabezeit DESC\
                     LIMIT 50"

@@ -179,7 +179,6 @@ while True:
                 # LOG
                 with open(str(current_dir) + datetime.datetime.now().strftime('/logs/%Y_%m_%d.log'), 'a') as log_file:
                     log_file.write(aml_result + '\n')
-                    log_file.write(aml_json + '\n')
 
 
     # Kein neuer Datensatz in C4-Datenbank vorhanden
